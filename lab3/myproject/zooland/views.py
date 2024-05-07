@@ -26,6 +26,14 @@ def visitor(request, visitor_id):
 
 
 @require_http_methods(["GET"])
+def visitor_tickets(request, visitor_id):
+    visitor_profile = VisitorProfile.objects.get(title=visitor_id)
+    return JsonResponse(list(Ticket.objects.filter(visitor_id=visitor_profile).values()),
+                        safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+
+@require_http_methods(["GET"])
 def all_zones(request):
     return JsonResponse(list(Zone.objects.all().values()), safe=False, json_dumps_params={'ensure_ascii': False})
 
@@ -43,10 +51,18 @@ def all_tickets(request):
 
 
 @require_http_methods(["GET"])
-def ticket(request, ticket_id):
-    ticket_item = Ticket.objects.get(number=ticket_id)
+def ticket(request, ticket_id_post):
+    ticket_item = Ticket.objects.get(number=ticket_id_post)
     context = {'ticket': model_to_dict(ticket_item)}
     return JsonResponse(context)
+
+
+@require_http_methods(["GET"])
+def ticket_zones(request, ticket_id_post):
+    ticket_item = Ticket.objects.get(number=ticket_id_post)
+    return JsonResponse(list(TicketZone.objects.filter(ticket_id=ticket_item)), 
+                        safe=False, json_dumps_params={'ensure_ascii': False})
+
 
 
 @csrf_exempt
@@ -73,5 +89,5 @@ def create_ticket(request):
     ticket_impl = Ticket.objects.create(visitor_id=visitor_profile, duration=data["duration"])
     for zone_data in data["zones"]:
         zone_impl = Zone.objects.get(title=zone_data)
-        TicketZone.objects.create(ticket_id=ticket, zone_id=zone_impl)
+        TicketZone.objects.create(ticket_id=ticket_impl, zone_id=zone_impl)
     return JsonResponse({'status': 'ok'})
