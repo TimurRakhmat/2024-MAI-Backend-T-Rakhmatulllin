@@ -57,7 +57,6 @@ def create_visitor(request):
     return JsonResponse({'status': 'ok'})
 
 
-
 @csrf_exempt
 @require_http_methods(["POST"])
 def create_zone(request):

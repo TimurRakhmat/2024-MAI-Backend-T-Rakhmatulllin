@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'zoopark',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost',
+        'HOST': 'postgres',
         'PORT': 5432,
     }
 }
