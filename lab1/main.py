@@ -6,6 +6,7 @@ def main():
     cache.set('Jesse', 'Pinkman')
     print(cache.cache)
     cache.set('Walter', 'White')
+    cache.get("Jesse")
     print(cache.cache)
     cache.set('a', 'a')
     print(cache.cache)
@@ -13,12 +14,13 @@ def main():
     print(cache.cache)
     cache.set('b', 'b')
     print(cache.cache)
-    
+
     cache.set('Jesse', 'James')
-    print(cache.get('Jesse')) # вернёт 'James'
-    #cache.rem('Walter')
-    print(cache.get('Walter')) # вернёт ''
+    print(cache.get('Jesse'))  # вернёт 'James'
+    # cache.rem('Walter')
+    print(cache.get('Walter'))  # вернёт ''
     print(cache.cache)
+
 
 if __name__ == '__main__':
     main()
