@@ -8,4 +8,7 @@ urlpatterns = [
     path('visitors/<uuid:visitor_id>', views.visitor, name='visitor'),
     path('tickets', views.all_tickets, name='tickets'),
     path('tickets/<uuid:ticket_id>', views.ticket, name='ticket'),
+    path('zones/create', views.create_zone, name='zone_create'),
+    path('visitors/create', views.create_visitor, name='visitor_create'),
+    path('tickets/create', views.create_ticket, name='tickets_create'),
 ]

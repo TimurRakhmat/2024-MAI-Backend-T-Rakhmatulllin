@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.forms import model_to_dict
 
 import json
 
-from .models import Zone, VisitorProfile, Ticket
+from .models import Zone, VisitorProfile, Ticket, TicketZone
 
 
 # Create your views here.
@@ -47,3 +48,31 @@ def ticket(request, ticket_id):
     context = {'ticket': model_to_dict(ticket_item)}
     return JsonResponse(context)
 
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def create_visitor(request):
+    post_data = json.loads(request.body.decode("utf-8"))
+    VisitorProfile.objects.create(login=post_data['login'], password=post_data['password'])
+    return JsonResponse({'status': 'ok'})
+
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def create_zone(request):
+    post_data = json.loads(request.body.decode("utf-8"))
+    Zone.objects.create(title=post_data['title'], description=post_data['description'])
+    return JsonResponse({'status': 'ok'})
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def create_ticket(request):
+    data = json.loads(request.body.decode("utf-8"))
+    visitor_profile = VisitorProfile.objects.get(login=data["visitor_id"])
+    ticket_impl = Ticket.objects.create(visitor_id=visitor_profile, duration=data["duration"])
+    for zone_data in data["zones"]:
+        zone_impl = Zone.objects.get(title=zone_data)
+        TicketZone.objects.create(ticket_id=ticket, zone_id=zone_impl)
+    return JsonResponse({'status': 'ok'})

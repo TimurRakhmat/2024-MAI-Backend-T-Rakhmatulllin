@@ -21,13 +21,13 @@ class Zone(models.Model):
 
 
 class Ticket(models.Model):
-    number = models.AutoField(primary_key=True)
+    ticket_id = models.AutoField(primary_key=True)
     visitor_id = models.ForeignKey(VisitorProfile, on_delete=models.CASCADE)
     date_purchase = models.DateTimeField(default=timezone.now)
     duration = models.IntegerField(default=3600)
 
     def __str__(self):
-        return self.number
+        return str(self.ticket_id)
 
 
 class TicketZone(models.Model):
