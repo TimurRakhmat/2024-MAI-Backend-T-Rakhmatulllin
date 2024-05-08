@@ -25,14 +25,15 @@ class Ticket(models.Model):
     visitor_id = models.ForeignKey(VisitorProfile, on_delete=models.CASCADE)
     date_purchase = models.DateTimeField(default=timezone.now)
     duration = models.IntegerField(default=3600)
+    zones = models.ManyToManyField(Zone)
 
     def __str__(self):
         return str(self.ticket_id)
 
 
-class TicketZone(models.Model):
-    ticket_id = models.ForeignKey(Ticket, on_delete=models.CASCADE)
-    zone_id = models.ForeignKey(Zone, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.ticket_id) + ": " + str(self.zone_id)
+# class TicketZone(models.Model):
+#     ticket_id = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+#     zone_id = models.ForeignKey(Zone, on_delete=models.CASCADE)
+#
+#     def __str__(self):
+#         return str(self.ticket_id) + ": " + str(self.zone_id)
