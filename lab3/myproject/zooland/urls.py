@@ -13,4 +13,5 @@ urlpatterns = [
     path('zones_create', views.create_zone, name='zone_create'),
     path('visitors_create', views.create_visitor, name='visitor_create'),
     path('tickets_create', views.create_ticket, name='tickets_create'),
+    path('zones_search', views.search_zone, name='search_zones'),
 ]

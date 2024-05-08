@@ -6,7 +6,7 @@ from django.forms import model_to_dict
 
 import json
 
-from .models import Zone, VisitorProfile, Ticket, TicketZone
+from .models import Zone, VisitorProfile, Ticket
 
 
 # Create your views here.
@@ -99,3 +99,15 @@ def create_ticket(request):
         ticket_impl.zones.add(zone_impl)
         # TicketZone.objects.create(ticket_id=ticket_impl, zone_id=zone_impl)
     return JsonResponse({'status': 'ok'})
+
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def search_zone(request):
+    query = request.GET.get('q', '')
+    zones = Zone.objects.filter(title__icontains=query) | Zone.objects.filter(description__icontains=query)
+    if zones:
+        return JsonResponse(list(zones.values()),
+                            safe=False, json_dumps_params={'ensure_ascii': False})
+
+    return JsonResponse({[]})
